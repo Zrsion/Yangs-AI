@@ -94,6 +94,10 @@ function getCoreStorageKey(isMobile: boolean) {
   return isMobile ? "yangsai-core-layout-mobile-v1" : "yangsai-core-layout-desktop-v1";
 }
 
+function getDefaultCorePosition(isMobile: boolean): CorePosition {
+  return { x: 50, y: isMobile ? 42 : 50 };
+}
+
 function isPositionMap(value: unknown): value is NodePositionMap {
   if (!value || typeof value !== "object") {
     return false;
@@ -177,7 +181,7 @@ export default function NeuralPortal() {
     const storageKey = getLayoutStorageKey(isMobile);
     const coreStorageKey = getCoreStorageKey(isMobile);
     const fallback = getDefaultLayout(isMobile);
-    const fallbackCore = { x: 50, y: isMobile ? 42 : 50 };
+    const fallbackCore = getDefaultCorePosition(isMobile);
     let nextPositions = fallback;
     let nextCore = fallbackCore;
 
@@ -709,6 +713,7 @@ export default function NeuralPortal() {
         className="absolute bottom-2 right-2 z-50 cursor-pointer rounded-lg border border-zinc-100/24 bg-[rgba(20,20,24,0.88)] px-3 py-1.5 text-[0.68rem] uppercase tracking-[0.12em] text-zinc-200 hover:bg-zinc-100/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200/85"
         onClick={() => {
           setNodePositions(getDefaultLayout(isMobile));
+          setCorePosition(getDefaultCorePosition(isMobile));
         }}
       >
         Reset Layout
