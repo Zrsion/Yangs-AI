@@ -1,0 +1,118 @@
+---
+
+import "../styles/global.css";
+import NeuralPortal from "../components/NeuralPortal";
+import { portalNodes } from "../data/portalNodes";
+
+const startYear = 2026;
+const currentYear = new Date().getFullYear();
+const copyrightRange = currentYear > startYear ? `${startYear}-${currentYear}` : `${currentYear}`;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#0d0d0f" />
+		<meta name="apple-mobile-web-app-title" content="Yangs AI" />
+		<title>Yangs AI | Neural Academic Portal</title>
+		<meta
+			name="description"
+			content="An interactive portal for AI research, resources, community, and people in the YangsAI ecosystem."
+		/>
+	</head>
+	<body class="flex h-screen flex-col overflow-hidden bg-transparent">
+		<header class="z-50 border-b border-white/12 bg-[rgba(14,14,16,0.76)] backdrop-blur-xl">
+			<div class="mx-auto flex h-20 max-w-[1320px] items-center justify-between px-5 md:px-10">
+				<a href="/" aria-label="Go to Yangs AI homepage" class="flex min-w-0 shrink-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200/80">
+					<img src="/favicon-32x32.png" alt="YangsAI logo" class="h-8 w-8 rounded-sm border border-white/15 bg-black/40" />
+					<img src="/yangs-ai-wordmark.svg" alt="Yangs AI" class="h-7 w-auto md:h-8" />
+				</a>
+				<nav class="hidden items-center gap-3 lg:flex">
+					{portalNodes.map((node) => (
+						<div class="group relative">
+							<button type="button" class="font-tech cursor-pointer rounded-lg border border-white/14 bg-white/4 px-3 py-2 text-xs uppercase tracking-[0.12em] text-zinc-200 hover:bg-white/10">
+								{node.label}
+							</button>
+							<div class="invisible pointer-events-none absolute right-0 top-full z-50 w-52 pt-2 opacity-0 transition duration-150 group-hover:visible group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+								<div class="rounded-xl border border-white/12 bg-[rgba(16,16,20,0.96)] p-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-md">
+									{node.subItems.map((item) => (
+										<a
+											href={item.href}
+											target={item.external ? "_blank" : undefined}
+											rel={item.external ? "noreferrer" : undefined}
+											class="block rounded-md px-2 py-1.5 text-xs text-zinc-200 hover:bg-white/10"
+										>
+											{item.label}
+										</a>
+									))}
+								</div>
+							</div>
+						</div>
+					))}
+				</nav>
+
+				<details class="relative lg:hidden" data-mobile-menu>
+					<summary class="font-tech cursor-pointer list-none rounded-lg border border-white/14 bg-white/4 px-3 py-2 text-xs uppercase tracking-[0.12em] text-zinc-200 hover:bg-white/10">
+						Menu
+					</summary>
+					<div class="absolute right-0 top-[calc(100%+0.45rem)] z-50 w-72 max-h-[70vh] overflow-auto rounded-xl border border-white/12 bg-[rgba(16,16,20,0.98)] p-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+						{portalNodes.map((node) => (
+							<details class="mb-1 rounded-lg border border-white/8 bg-white/3 p-1" name="mobile-nav-category" data-mobile-submenu>
+								<summary class="font-tech cursor-pointer list-none rounded-md px-2 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-zinc-200 hover:bg-white/8">
+									{node.label}
+								</summary>
+								<div class="mt-1 space-y-0.5 px-1 pb-1">
+									{node.subItems.map((item) => (
+										<a
+											href={item.href}
+											target={item.external ? "_blank" : undefined}
+											rel={item.external ? "noreferrer" : undefined}
+											class="block rounded-md px-2 py-1.5 text-xs text-zinc-300 hover:bg-white/8 hover:text-zinc-100"
+											data-mobile-menu-link
+										>
+											{item.label}
+										</a>
+									))}
+								</div>
+							</details>
+						))}
+					</div>
+				</details>
+			</div>
+		</header>
+
+		<script>
+			document.addEventListener("click", (event) => {
+				const target = event.target;
+				if (!(target instanceof HTMLElement)) return;
+				if (!target.closest("[data-mobile-menu-link]")) return;
+
+				const menu = document.querySelector("details[data-mobile-menu]");
+				const submenus = document.querySelectorAll("details[data-mobile-submenu]");
+
+				submenus.forEach((el) => el.removeAttribute("open"));
+				menu?.removeAttribute("open");
+			});
+		</script>
+		<main class="mx-auto flex-1 min-h-0 w-full max-w-[1320px] px-2 pt-1 md:px-6 md:pt-2">
+			<NeuralPortal client:load />
+		</main>
+		<footer class="mx-auto h-14 w-full max-w-[1320px] shrink-0 px-5 text-xs text-zinc-500 md:px-10">
+			<div class="flex h-full items-center justify-between border-t border-white/10 pt-1">
+				<p>Copyright © {copyrightRange} YangsAI. All Rights Reserved.</p>
+				<p class="hidden md:block">Yangs AI - dedicated to discovering the fundamental principles of artificial intelligence.</p>
+			</div>
+		</footer>
+	</body>
+</html>
