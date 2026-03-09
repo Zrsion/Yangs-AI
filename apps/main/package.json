@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
+    "@fontsource/manrope": "^5.2.8",
+    "@fontsource/oxanium": "^5.2.8",
     "@tailwindcss/vite": "^4.2.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
