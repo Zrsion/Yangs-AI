@@ -6,9 +6,9 @@ import BackButton from "../../../components/BackButton.astro";
 type StudentLevel = "undergraduate" | "master" | "phd";
 
 const levelMeta: Array<{ key: StudentLevel; label: string }> = [
-  { key: "undergraduate", label: "Undergraduate" },
-  { key: "master", label: "Master" },
   { key: "phd", label: "PhD" },
+  { key: "master", label: "Master" },
+  { key: "undergraduate", label: "Undergraduate" },
 ];
 
 const statusText = (graduated: boolean) => (graduated ? "Graduated Student" : "Current Student");
